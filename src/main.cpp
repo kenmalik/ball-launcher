@@ -7,17 +7,25 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Event.hpp>
+#include <iostream>
+#include <vector>
 #include "ball.h"
 
+constexpr float SCREEN_WIDTH = 1400;
+constexpr float SCREEN_HEIGHT = 1000;
+
+void UpdatePositions(std::vector<Ball>&, sf::Time&);
+
 int main() {
-    constexpr float SCREEN_WIDTH = 1800;
-    constexpr float SCREEN_HEIGHT = 1600;
+    constexpr float STARTING_VELOCITY_X = 1;
+    constexpr float STARTING_VELOCITY_Y = -3;
 
-    std::vector<Ball> balls;
-    balls.push_back(Ball(15, sf::Vector2f(0,.1)));
+    std::vector<Ball> active_balls;
+    active_balls.push_back(Ball(15, sf::Vector2f(STARTING_VELOCITY_X, STARTING_VELOCITY_Y)));
+    active_balls.at(0).setPosition(0, SCREEN_HEIGHT - (2.5 * active_balls.at(0).getRadius()));
 
-    Ball ball(10, sf::Vector2f(0,0));
-    ball.setFillColor(sf::Color::Green);
+    Ball selector_ball(10, sf::Vector2f(0,0));
+    selector_ball.setFillColor(sf::Color::Green);
 
     sf::Clock clock;
     sf::Time timer = sf::milliseconds(0);
@@ -31,31 +39,38 @@ int main() {
                 window.close();
             }
             if (event.key.code == sf::Keyboard::Left) {
-                ball.setFillColor(sf::Color::Red);
+                selector_ball.setFillColor(sf::Color::Red);
             }
             if (event.key.code == sf::Keyboard::Right) {
-                ball.setFillColor(sf::Color::Green);
+                selector_ball.setFillColor(sf::Color::Green);
             }
         }
 
         window.clear();
-
-        ball.move(ball.getVelocity());
-
-        for (int i = 0; i < balls.size(); ++i) {
-            balls.at(i).move(balls.at(i).velocity);
-            if (timer >= sf::milliseconds(1000)) {
-                balls.at(i).velocity.y += .005;
-            }
-            window.draw(balls.at(i));
-
-            if (balls.at(i).getPosition().y >= SCREEN_HEIGHT / 2) {
-                balls.erase(balls.begin() + i);
-            }
+        for (int i = 0; i < active_balls.size(); ++i) {
+            window.draw(active_balls.at(i));
+            UpdatePositions(active_balls, timer);
         }
 
-        window.draw(ball);
+        selector_ball.move(selector_ball.getVelocity());
+
+        window.draw(selector_ball);
         window.display();
     }
     return 0;
+}
+
+void UpdatePositions(std::vector<Ball>& active_balls, sf::Time& timer) {
+        for (int i = 0; i < active_balls.size(); ++i) {
+            active_balls.at(i).move(active_balls.at(i).velocity);
+            if (timer >= sf::milliseconds(100)) {
+                active_balls.at(i).velocity.y += .005;
+            }
+
+            if (active_balls.at(i).getPosition().y >= SCREEN_HEIGHT - active_balls.at(i).getRadius() * 2) {
+                active_balls.erase(active_balls.begin() + i);
+            }
+        }
+
+
 }
