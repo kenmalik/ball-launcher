@@ -25,8 +25,9 @@ int main() {
     active_balls.at(0).setPosition(0, SCREEN_HEIGHT - (2.5 * active_balls.at(0).getRadius()));
 
     BallQueue ball_queue;
+    ball_queue.setPosition(sf::Vector2f(50, SCREEN_HEIGHT * 2/3));
 
-    Ball selector_ball(10, sf::Vector2f(0,0));
+    Ball selector_ball(15, sf::Vector2f(0,0));
     selector_ball.setFillColor(sf::Color::Green);
 
     sf::Clock clock;
@@ -37,27 +38,35 @@ int main() {
 
         sf::Event event;
         while (window.pollEvent(event)) {
+            if (event.type == sf::Event::KeyPressed) {
+                switch (event.key.code) {
+                    case sf::Keyboard::Left:
+                        selector_ball.setFillColor(sf::Color::Red);
+                        break;
+                    case sf::Keyboard::Right:
+                        selector_ball.setFillColor(sf::Color::Green);
+                        break;
+                    case sf::Keyboard::Space:
+                        active_balls.push_back(ball_queue.dispense());
+                        break;
+                    case sf::Keyboard::R:
+                        ball_queue.add(selector_ball);
+                        break;
+                    default:
+                        break;
+                }
+            }
             if (event.type == sf::Event::Closed) {
                 window.close();
-            }
-            if (event.key.code == sf::Keyboard::Left) {
-                selector_ball.setFillColor(sf::Color::Red);
-            }
-            if (event.key.code == sf::Keyboard::Right) {
-                selector_ball.setFillColor(sf::Color::Green);
-            }
-            if (event.key.code == sf::Keyboard::Space) {
-                active_balls.push_back(ball_queue.dispense());
-            }
-            if (event.key.code == sf::Keyboard::R) {
-                ball_queue.add(selector_ball);
             }
         }
 
         window.clear();
-        for (int i = 0; i < active_balls.size(); ++i) {
-            window.draw(active_balls.at(i));
-            UpdatePositions(active_balls, timer);
+
+        UpdatePositions(active_balls, timer);
+
+        for (const Ball& b : active_balls) {
+            window.draw(b);
         }
 
         selector_ball.move(selector_ball.getVelocity());
