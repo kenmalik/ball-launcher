@@ -1,7 +1,6 @@
 #include "ball-queue.h"
 #include <cmath>
 #include <memory>
-#include <math.h>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -52,8 +51,8 @@ void BallQueue::rotateRight() {
 
 Ball BallQueue::dispense() {
     constexpr float kLaunchVelocity = 3;
-    const float x_velocity = abs(kLaunchVelocity * cos(launcher->getRotation()));
-    const float y_velocity = -abs(kLaunchVelocity * sin(launcher->getRotation()));
+    const float x_velocity = kLaunchVelocity * std::cos(launcher->getRotation() * (M_PI / 180));
+    const float y_velocity = kLaunchVelocity * std::sin(launcher->getRotation() * (M_PI / 180));
 
     Ball dispensed = *balls.front();
     balls.pop();

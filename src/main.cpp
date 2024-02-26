@@ -26,6 +26,7 @@ int main() {
     ball_queue.setPosition(sf::Vector2f(50, SCREEN_HEIGHT * 2/3));
 
     Ball selector_ball(15, sf::Vector2f(0,0));
+    selector_ball.setPosition(ball_queue.getPosition() - sf::Vector2f(0, 30));
     selector_ball.setFillColor(sf::Color::Green);
 
     constexpr float kMinRotation = 300;
