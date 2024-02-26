@@ -11,29 +11,27 @@
 #include <vector>
 #include "ball-queue.h"
 
-constexpr float SCREEN_WIDTH = 1400;
-constexpr float SCREEN_HEIGHT = 1000;
+constexpr float kScreenWidth = 1400;
+constexpr float kScreenHeight = 1000;
 
 void UpdatePositions(std::vector<Ball>&, sf::Time&);
 
 int main() {
-    constexpr float STARTING_VELOCITY_X = 1;
-    constexpr float STARTING_VELOCITY_Y = -3;
+    constexpr float kMinRotation = 300;
+    constexpr float kMaxRotation = 350;
 
     std::vector<Ball> active_balls;
 
     BallQueue ball_queue;
-    ball_queue.setPosition(sf::Vector2f(50, SCREEN_HEIGHT * 2/3));
+    ball_queue.setPosition(sf::Vector2f(50, kScreenHeight * 2/3));
 
     Ball selector_ball(20, sf::Vector2f(0,0));
     selector_ball.setPosition(ball_queue.getPosition() - sf::Vector2f(10, 60));
     selector_ball.setFillColor(sf::Color::Green);
 
-    constexpr float kMinRotation = 300;
-    constexpr float kMaxRotation = 350;
     sf::Clock clock;
     sf::Time timer = sf::milliseconds(0);
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Window");
+    sf::RenderWindow window(sf::VideoMode(kScreenWidth, kScreenHeight), "Window");
     while (window.isOpen()) {
         timer += clock.restart();
 
@@ -42,15 +40,13 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-                if (ball_queue.get_launcher().getRotation() > kMinRotation) { 
-                    ball_queue.rotateLeft();
-                }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)
+                    && ball_queue.get_launcher().getRotation() > kMinRotation) {
+                ball_queue.rotateLeft();
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-                if (ball_queue.get_launcher().getRotation() < kMaxRotation) { 
-                    ball_queue.rotateRight();
-                }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)
+                    && ball_queue.get_launcher().getRotation() < kMaxRotation) {
+                ball_queue.rotateRight();
             }
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
@@ -102,11 +98,11 @@ void UpdatePositions(std::vector<Ball>& active_balls, sf::Time& timer) {
                 ball.velocity.y += .005;
             }
 
-            if (ball.getPosition().x >= SCREEN_WIDTH - active_balls.at(i).getRadius() * 2) {
+            if (ball.getPosition().x >= kScreenWidth - active_balls.at(i).getRadius() * 2) {
                 ball.setVelocity(sf::Vector2f(-ball.getVelocity().x, ball.getVelocity().y));
             }
 
-            if (ball.getPosition().y >= SCREEN_HEIGHT - active_balls.at(i).getRadius() * 2) {
+            if (ball.getPosition().y >= kScreenHeight - active_balls.at(i).getRadius() * 2) {
                 active_balls.erase(active_balls.begin() + i);
             }
         }
