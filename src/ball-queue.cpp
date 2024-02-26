@@ -35,6 +35,8 @@ BallQueue::BallQueue() {
 
 sf::RectangleShape& BallQueue::get_launcher() { return *launcher; }
 
+bool BallQueue::empty() { return balls.empty(); }
+
 void BallQueue::add(Ball& ball) {
     balls.push(std::make_unique<Ball>(ball));
     indicator->setFillColor(balls.front()->getFillColor());

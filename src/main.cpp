@@ -63,7 +63,11 @@ int main() {
                         selector_ball.setFillColor(sf::Color::Blue);
                         break;
                     case sf::Keyboard::Space:
-                        active_balls.push_back(ball_queue.dispense());
+                        if (!ball_queue.empty()) {
+                            active_balls.push_back(ball_queue.dispense());
+                        } else {
+                            std::cout << "Queue is empty!" << std::endl;
+                        }
                         break;
                     case sf::Keyboard::E:
                         ball_queue.add(selector_ball);

@@ -18,6 +18,7 @@ class BallQueue : public sf::Drawable, public sf::Transformable {
         void add(Ball&);
         Ball dispense();
         sf::RectangleShape& get_launcher();
+        bool empty();
         void rotateLeft();
         void rotateRight();
         virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
