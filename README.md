@@ -1,6 +1,18 @@
 
 # Ball-Launcher
 
+## Building
+
+In order to build, navigate to the Ball-Launcher directory and run the following
+commands:
+
+```
+mkdir build && cd build
+cmake ../src && cmake --build .
+```
+
+Simply run the generated executable to play.
+
 ## Controls
 
 ### Color Selection
@@ -26,3 +38,4 @@ there are no balls loaded, the indicator will be grey.
 
 *If there are no balls loaded, you will recieve a stdout message saying the queue
 is empty.
+
