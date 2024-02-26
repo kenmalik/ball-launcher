@@ -57,7 +57,7 @@ Ball BallQueue::dispense() {
     Ball dispensed = *balls.front();
     balls.pop();
 
-    dispensed.setPosition(getPosition() + sf::Vector2f(kIndicatorLength / 2, kLauncherWidth / 3));
+    dispensed.setPosition(getPosition() + sf::Vector2f(kIndicatorLength / 3, kLauncherWidth / 3));
     dispensed.setVelocity(sf::Vector2f(x_velocity, y_velocity));
 
     if (!balls.empty()) {
