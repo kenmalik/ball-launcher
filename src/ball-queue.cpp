@@ -8,13 +8,6 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/System/Vector2.hpp>
 
-constexpr float kLauncherLength = 125;
-constexpr float kLauncherWidth = 75;
-constexpr float kLauncherBorder = 2;
-
-constexpr float kIndicatorLength = 130;
-constexpr float kIndicatorWidth = 35;
-constexpr float kIndicatorBorder = 5;
 
 BallQueue::BallQueue() {
     launcher = std::make_unique<sf::RectangleShape>(sf::Vector2f(kLauncherLength,kLauncherWidth));

@@ -14,6 +14,14 @@
 
 class BallQueue : public sf::Drawable, public sf::Transformable {
     public:
+        static constexpr float kLauncherLength = 125;
+        static constexpr float kLauncherWidth = 75;
+        static constexpr float kLauncherBorder = 2;
+
+        static constexpr float kIndicatorLength = 130;
+        static constexpr float kIndicatorWidth = 35;
+        static constexpr float kIndicatorBorder = 5;
+
         BallQueue();
         void add(Ball&);
         Ball dispense();
