@@ -17,11 +17,14 @@ class BallQueue : public sf::Drawable, public sf::Transformable {
         BallQueue();
         void add(Ball&);
         Ball dispense();
+        sf::RectangleShape& get_launcher();
+        void rotateLeft();
+        void rotateRight();
         virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
     private:
         sf::Vector2f position;
         std::queue<std::unique_ptr<Ball>> balls;
-        std::unique_ptr<sf::RectangleShape> background;
+        std::unique_ptr<sf::RectangleShape> launcher;
         std::unique_ptr<sf::RectangleShape> indicator;
 };
 

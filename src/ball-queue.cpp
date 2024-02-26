@@ -18,13 +18,13 @@ constexpr float kIndicatorWidth = 35;
 constexpr float kIndicatorBorder = 5;
 
 BallQueue::BallQueue() {
-    background = std::make_unique<sf::RectangleShape>(sf::Vector2f(kLauncherLength,kLauncherWidth));
-    background->setOrigin(sf::Vector2f(kLauncherLength / 2,kLauncherWidth / 2));
-    background->setPosition(sf::Vector2f(kLauncherLength / 2,kLauncherWidth / 2));
-    background->setRotation(-45);
-    background->setOutlineThickness(kLauncherBorder);
-    background->setOutlineColor(sf::Color(161, 161, 161));
-    background->setFillColor(sf::Color(100, 105, 112));
+    launcher = std::make_unique<sf::RectangleShape>(sf::Vector2f(kLauncherLength,kLauncherWidth));
+    launcher->setOrigin(sf::Vector2f(kLauncherLength / 2,kLauncherWidth / 2));
+    launcher->setPosition(sf::Vector2f(kLauncherLength / 2,kLauncherWidth / 2));
+    launcher->setRotation(-45);
+    launcher->setOutlineThickness(kLauncherBorder);
+    launcher->setOutlineColor(sf::Color(161, 161, 161));
+    launcher->setFillColor(sf::Color(100, 105, 112));
 
     indicator = std::make_unique<sf::RectangleShape>(sf::Vector2f(kIndicatorLength, kIndicatorWidth));
     indicator->setPosition(sf::Vector2f(0, kLauncherWidth));
@@ -33,15 +33,25 @@ BallQueue::BallQueue() {
     indicator->setFillColor(sf::Color(69, 69, 69));
 }
 
+sf::RectangleShape& BallQueue::get_launcher() { return *launcher; }
+
 void BallQueue::add(Ball& ball) {
     balls.push(std::make_unique<Ball>(ball));
     indicator->setFillColor(balls.front()->getFillColor());
 }
 
+void BallQueue::rotateLeft() {
+    launcher->rotate(-1);
+}
+
+void BallQueue::rotateRight() {
+    launcher->rotate(1);
+}
+
 Ball BallQueue::dispense() {
     constexpr float kLaunchVelocity = 3;
-    const float x_velocity = abs(kLaunchVelocity * cos(background->getRotation()));
-    const float y_velocity = -abs(kLaunchVelocity * sin(background->getRotation()));
+    const float x_velocity = abs(kLaunchVelocity * cos(launcher->getRotation()));
+    const float y_velocity = -abs(kLaunchVelocity * sin(launcher->getRotation()));
 
     Ball dispensed = *balls.front();
     balls.pop();
@@ -61,6 +71,6 @@ Ball BallQueue::dispense() {
 void BallQueue::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
 
-    target.draw(*background, getTransform());
+    target.draw(*launcher, getTransform());
     target.draw(*indicator, getTransform());
 }
