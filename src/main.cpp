@@ -9,7 +9,7 @@
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 #include <vector>
-#include "ball.h"
+#include "ball-queue.h"
 
 constexpr float SCREEN_WIDTH = 1400;
 constexpr float SCREEN_HEIGHT = 1000;
@@ -23,6 +23,8 @@ int main() {
     std::vector<Ball> active_balls;
     active_balls.push_back(Ball(15, sf::Vector2f(STARTING_VELOCITY_X, STARTING_VELOCITY_Y)));
     active_balls.at(0).setPosition(0, SCREEN_HEIGHT - (2.5 * active_balls.at(0).getRadius()));
+
+    BallQueue ball_queue;
 
     Ball selector_ball(10, sf::Vector2f(0,0));
     selector_ball.setFillColor(sf::Color::Green);
@@ -45,7 +47,10 @@ int main() {
                 selector_ball.setFillColor(sf::Color::Green);
             }
             if (event.key.code == sf::Keyboard::Space) {
-                active_balls.push_back(Ball(selector_ball));
+                active_balls.push_back(ball_queue.dispense());
+            }
+            if (event.key.code == sf::Keyboard::R) {
+                ball_queue.add(selector_ball);
             }
         }
 
@@ -57,6 +62,7 @@ int main() {
 
         selector_ball.move(selector_ball.getVelocity());
 
+        window.draw(ball_queue);
         window.draw(selector_ball);
         window.display();
     }

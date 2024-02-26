@@ -1,3 +1,6 @@
+#ifndef BALL_H
+#define BALL_H
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <string>
@@ -15,3 +18,5 @@ class Ball : public sf::CircleShape {
     private:
         std::string name;
 };
+
+#endif
