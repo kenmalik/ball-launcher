@@ -63,15 +63,15 @@ int main() {
                     case sf::Keyboard::B:
                         selector_ball.setFillColor(sf::Color::Blue);
                         break;
+                    case sf::Keyboard::E:
+                        ball_queue += selector_ball;
+                        break;
                     case sf::Keyboard::Space:
                         if (!ball_queue.empty()) {
                             active_balls.push_back(ball_queue.dispense());
                         } else {
                             std::cout << "Queue is empty!" << std::endl;
                         }
-                        break;
-                    case sf::Keyboard::E:
-                        ball_queue.add(selector_ball);
                         break;
                     default:
                         break;
@@ -96,12 +96,17 @@ int main() {
 
 void UpdatePositions(std::vector<Ball>& active_balls, sf::Time& timer) {
         for (int i = 0; i < active_balls.size(); ++i) {
-            active_balls.at(i).move(active_balls.at(i).velocity);
+            Ball& ball = active_balls.at(i);
+            ball.move(active_balls.at(i).velocity);
             if (timer >= sf::milliseconds(100)) {
-                active_balls.at(i).velocity.y += .005;
+                ball.velocity.y += .005;
             }
 
-            if (active_balls.at(i).getPosition().y >= SCREEN_HEIGHT - active_balls.at(i).getRadius() * 2) {
+            if (ball.getPosition().x >= SCREEN_WIDTH - active_balls.at(i).getRadius() * 2) {
+                ball.setVelocity(sf::Vector2f(-ball.getVelocity().x, ball.getVelocity().y));
+            }
+
+            if (ball.getPosition().y >= SCREEN_HEIGHT - active_balls.at(i).getRadius() * 2) {
                 active_balls.erase(active_balls.begin() + i);
             }
         }

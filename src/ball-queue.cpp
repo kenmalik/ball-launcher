@@ -25,6 +25,9 @@ BallQueue::BallQueue() {
     indicator->setFillColor(sf::Color(69, 69, 69));
 }
 
+// Yeahhh I wasn't sure what to do for operator overloading
+void BallQueue::operator+=(Ball& ball) { add(ball); }
+
 sf::RectangleShape& BallQueue::get_launcher() { return *launcher; }
 
 bool BallQueue::empty() { return balls.empty(); }

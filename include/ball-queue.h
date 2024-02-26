@@ -23,12 +23,17 @@ class BallQueue : public sf::Drawable, public sf::Transformable {
         static constexpr float kIndicatorBorder = 5;
 
         BallQueue();
-        void add(Ball&);
-        Ball dispense();
+
+        void operator+=(Ball&);
+
         sf::RectangleShape& get_launcher();
         bool empty();
+        
+        void add(Ball&);
+        Ball dispense();
         void rotateLeft();
         void rotateRight();
+
         virtual void draw(sf::RenderTarget&, sf::RenderStates) const;
     private:
         sf::Vector2f position;
