@@ -44,6 +44,9 @@ int main() {
             if (event.key.code == sf::Keyboard::Right) {
                 selector_ball.setFillColor(sf::Color::Green);
             }
+            if (event.key.code == sf::Keyboard::Space) {
+                active_balls.push_back(Ball(selector_ball));
+            }
         }
 
         window.clear();
