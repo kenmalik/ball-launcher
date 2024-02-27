@@ -6,7 +6,7 @@
 In order to build, navigate to the Ball-Launcher directory and run the following
 commands:
 
-```
+```shell
 mkdir build && cd build
 cmake ../src && cmake --build .
 ```
